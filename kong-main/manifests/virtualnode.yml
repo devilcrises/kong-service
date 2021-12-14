@@ -1,0 +1,21 @@
+apiVersion: appmesh.k8s.aws/v1beta2
+kind: VirtualNode
+metadata:
+  name: kong-node
+  namespace: kong
+spec:
+  podSelector:
+    matchLabels:
+      app: ingress-kong
+  listeners:
+    - portMapping:
+        port: 80
+        protocol: http
+  backends:
+    - virtualService:
+        virtualServiceRef:
+          name: jarvis-virtual-service
+          namespace: default
+  serviceDiscovery:
+    dns:
+      hostname: kong-proxy.kong.svc.cluster.local
